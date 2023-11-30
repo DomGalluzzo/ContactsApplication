@@ -28,14 +28,9 @@ namespace ContactsApplication.Server.Repositories
 
         private async Task<IEnumerable<Contact>> TryGetAllAsync(string filePath)
         {
-            var jsonContacts = await TryParseAsync(filePath);
+            var jsonContent = await File.ReadAllTextAsync(filePath);
 
-            return new List<Contact>();
-        }
-
-        private async Task<IEnumerable<Contact>> TryParseAsync(string filePath)
-        {
-            return new List<Contact>();
+            return JsonConvert.DeserializeObject<IEnumerable<Contact>>(jsonContent);
         }
     }
 }

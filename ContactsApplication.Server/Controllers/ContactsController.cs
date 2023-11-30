@@ -25,7 +25,7 @@ namespace ContactsApplication.Server.Controllers
             {
                 var contacts = await _contactsService.GetContactsAsync();
 
-                return Ok();
+                return Ok(contacts);
             }
             catch (Exception ex)
             {
