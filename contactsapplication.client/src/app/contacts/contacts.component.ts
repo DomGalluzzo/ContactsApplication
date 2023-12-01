@@ -54,6 +54,11 @@ export class ContactsComponent implements OnInit {
     }
   }
 
+  removeContact(contactId: number): void {
+    this.contacts = this.contacts.filter(c => c.id !== contactId);
+    this.notificationService.createSuccess('Contact deleted', 'Success!');
+  }
+
   private getContacts(): void {
     this.contactsService.getContacts().pipe(catchError((errorResponse: HttpErrorResponse) => {
       const error = errorResponse.error as BaseError;

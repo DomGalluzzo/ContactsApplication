@@ -51,5 +51,22 @@ namespace ContactsApplication.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [HttpDelete("{contactId}")]
+        public async Task<IActionResult> DeleteContactAsync(int contactId)
+        {
+            try
+            {
+                var deletedContact = await _contactsService.DeleteContactAsync(contactId);
+
+                return Ok(contactId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

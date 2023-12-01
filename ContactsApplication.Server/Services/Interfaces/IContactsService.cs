@@ -6,5 +6,6 @@ namespace ContactsApplication.Server.Services.Interfaces
     {
         Task<IEnumerable<Contact>> GetContactsAsync();
         Task<Contact> CreateContactAsync(Contact contactRequest);
+        Task<int> DeleteContactAsync(int contactId);
     }
 }

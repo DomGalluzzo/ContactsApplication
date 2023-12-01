@@ -17,4 +17,8 @@ export class ContactsService {
 	createContact(contact: Contact): Observable<Contact> {
 		return this.http.post<Contact>(this.baseUrl, contact);
 	}
+
+	deleteContact(contactId: number): Observable<number> {
+		return this.http.delete<number>([this.baseUrl, contactId].join('/'));
+	}
 }
