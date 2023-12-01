@@ -1,0 +1,25 @@
+<div class="container mt-4">
+	<div class="d-flex flex-row pt-4 p-2 border">
+		<div class="col-md-2 text-start">
+			<h4>Id</h4>
+		</div>
+		<div class="col-md-2 text-start">
+			<h4>First Name</h4>
+		</div>
+		<div class="col-md-2 text-start">
+			<h4>Last Name</h4>
+		</div>
+		<div class="col-md-4 text-start">
+			<h4>Email</h4>
+		</div>
+		<div class="col-md-1 text-start">
+			<h4>Edit</h4>
+		</div>
+		<div class="col-md-1 text-start">
+			<h4>Delete</h4>
+		</div>
+	</div>
+	<ng-container *ngFor="let contact of contacts">
+		<app-contact [contact]="contact"></app-contact>
+	</ng-container>
+</div>
