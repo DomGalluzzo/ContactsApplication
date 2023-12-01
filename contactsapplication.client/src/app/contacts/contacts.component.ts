@@ -16,6 +16,7 @@ import { NotificationService } from '../core/services/notification-service.servi
 export class ContactsComponent implements OnInit {
   form: FormGroup;
   contacts: Contact[];
+  isSubmitted = false;
 
   constructor(
     private contactsService: ContactsService,
@@ -27,7 +28,12 @@ export class ContactsComponent implements OnInit {
     this.getForm();
   }
 
+  get formControls() {
+    return this.form.controls;
+  }
+
   createContact(): void {
+    this.isSubmitted = true;
     if (this.isFormValid()) {
       this.contactsService.createContact(this.form.value as Contact).pipe(catchError((errorResponse: HttpErrorResponse) => {
         const error = errorResponse.error as BaseError;
@@ -35,6 +41,7 @@ export class ContactsComponent implements OnInit {
         'An error was encountered while creating contact' : error.message;
 
         this.notificationService.createError(message, error.title);
+        this.isSubmitted = false;
 
         return EMPTY;
       }))
@@ -42,6 +49,7 @@ export class ContactsComponent implements OnInit {
         this.contacts.push(data);
         this.form.reset();
         this.notificationService.createSuccess('New contact created', 'Success!');
+        this.isSubmitted = false;
       });
     }
   }
@@ -63,7 +71,7 @@ export class ContactsComponent implements OnInit {
     this.form = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 

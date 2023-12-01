@@ -25,6 +25,7 @@
 								<label for="newContactEmail" class="form-label">Email</label>
 							</div>
 							<input formControlName="email" type="email" class="form-control" id="newContactEmail" placeholder="JohnDoe@gmail.com" required>
+							<label *ngIf="isSubmitted && formControls.email.errors" class="text-danger">Must be in valid email address format</label>
 						</div>
 						<div class="col-2 mb-3 ms-5" id="contacts-submit__button">
 							<button type="submit" class="btn btn-success px-2 flex-wrap w-100 text-center" (click)="createContact()">Submit</button>
