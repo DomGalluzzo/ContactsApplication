@@ -22,3 +22,24 @@
    - I decided to use a "Contacts" object in appsettings.json in order to allow for the use of IOptions<T>. This would help the application to scale further in the future by allowing for the use of additional files. For example, if a request was made to be able to read additional contact information from a separate file, the contacts option could be reconfigured to include additional file paths. `"Contacts": {
   "FilePath": "./contacts.json"
 }`
+
+## Future Implementations
+In the future I woud like to implement several more features to thoroughly flesh out the application.
+1. Pagination
+  - Implement pagination so that if the list of contacts exceeds a certain number, the remaining are sent to the next page. This would allow the application to look more clean because if currently an excessive number of contacts are added, the page continues indefinitely.
+2. Search
+   - Implement search functionality to allow a user to search for contacts by Id, First Name, Last Name, or Email
+3. Sorting
+   - Allow a user to sort columns by ascending or descending order
+4. Bulk Manipulation
+   - Implement bulk manipulation functionality to allow a user to select multiple contacts and edit or delete
+5. Contact Picture
+   - Allow contacts to have a picture attached
+6. View Contact
+   - When clicking on a contact row, open a new page to that contact's profile which would display more in depth information about them including: their profile picture, small description, age, address, etc.
+7. Admin and User
+   - Create a sign in page to allow admins access to manipulate all users, and only allow other users to manipulate users that they have added.
+8. Navigation Bar
+   - Implement a navigation bar to allow a user to view their own contact profile and update their information
+9. Google Sign In
+   - Implement the use of signing in with Google
