@@ -1,0 +1,9 @@
+<div *ngIf="show" class="notification" [ngClass]="getClass(notification)">
+	<div class="notification__close-button me-1 d-flex" (click)="closeDialog()">
+		<div class="notification__title fs-4">{{notification.title}}</div>
+		<i class="bi bi-x-circle"></i>
+	</div>
+	<div class="notification__container">
+		<div class="notification__message">{{notification.message}}</div>
+	</div>
+</div>
