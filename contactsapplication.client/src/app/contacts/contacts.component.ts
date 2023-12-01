@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { catchError, EMPTY } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -14,7 +14,8 @@ import { NotificationService } from '../core/services/notification-service.servi
   styleUrl: './contacts.component.css'
 })
 export class ContactsComponent implements OnInit {
-  form: FormGroup;
+  mainForm: FormArray;
+  newContactForm: FormGroup;
   contacts: Contact[];
   isSubmitted = false;
 
@@ -25,17 +26,17 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getContacts();
-    this.getForm();
+    this.getNewContactForm();
   }
 
   get formControls() {
-    return this.form.controls;
+    return this.newContactForm.controls;
   }
 
   createContact(): void {
     this.isSubmitted = true;
-    if (this.isFormValid()) {
-      this.contactsService.createContact(this.form.value as Contact).pipe(catchError((errorResponse: HttpErrorResponse) => {
+    if (this.isFormValid(this.newContactForm)) {
+      this.contactsService.createContact(this.newContactForm.value as Contact).pipe(catchError((errorResponse: HttpErrorResponse) => {
         const error = errorResponse.error as BaseError;
         const message = !error.message ?
         'An error was encountered while creating contact' : error.message;
@@ -47,7 +48,7 @@ export class ContactsComponent implements OnInit {
       }))
       .subscribe((data: Contact) => {
         this.contacts.push(data);
-        this.form.reset();
+        this.newContactForm.reset();
         this.notificationService.createSuccess('New contact created', 'Success!');
         this.isSubmitted = false;
       });
@@ -57,6 +58,10 @@ export class ContactsComponent implements OnInit {
   removeContact(contactId: number): void {
     this.contacts = this.contacts.filter(c => c.id !== contactId);
     this.notificationService.createSuccess('Contact deleted', 'Success!');
+  }
+
+  updateContact(): void {
+    this.getContacts();
   }
 
   private getContacts(): void {
@@ -72,16 +77,16 @@ export class ContactsComponent implements OnInit {
     .subscribe((data: Contact[]) => this.contacts = data);
   }
   
-  private getForm(): void {
-    this.form = this.formBuilder.group({
+  private getNewContactForm(): void {
+    this.newContactForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  private isFormValid(): boolean {
-    if (!this.form.valid) {
+  private isFormValid(formGroup: FormGroup): boolean {
+    if (!formGroup.valid) {
       this.notificationService.createError('Please make sure all required fields are filled out.', 'Error');
 
       return false;

@@ -1,20 +1,46 @@
-<div class="d-flex flex-row border p-2">
+<form [formGroup]="form" class="d-flex border flex-row p-2">
 	<div class="col-2 text-wrap text-start">
 		<h6>{{contact.id}}</h6>
 		</div>
 	<div class="col-2 text-wrap text-start">
-		<h6>{{contact.firstName}}</h6>
+		<h6 [ngClass]="isEditShown ? 'hide' : 'show'">{{contact.firstName}}</h6>
+		<input
+			class="form-control w-75"
+			[ngClass]="{'show': isEditShown, 'hide': !isEditShown, 'form-error': isSubmitted && form.controls.firstName.errors}"
+			type="text"
+			formControlName="firstName"
+			placeholder="{{contact.firstName}}">
 	</div>
 	<div class="col-2 text-wrap text-start">
-		<h6>{{contact.lastName}}</h6>
+		<h6 [ngClass]="isEditShown ? 'hide' : 'show'">{{contact.lastName}}</h6>
+		<input
+			class="form-control w-75"
+			[ngClass]="{'show': isEditShown, 'hide': !isEditShown, 'form-error': isSubmitted && form.controls.lastName.errors}"
+			type="text"
+			formControlName="lastName"
+			placeholder="{{contact.lastName}}">
 	</div>
 	<div class="col-4 text-wrap text-start">
-		<h6 class="text-wrap">{{contact.email}}</h6>
+		<h6 [ngClass]="isEditShown ? 'hide' : 'show'">{{contact.email}}</h6>
+		<div class="d-flex justify-content-between" [ngClass]="isEditShown ? 'show' : 'hide'">
+			<input
+				class="form-control w-75"
+				[ngClass]="{'show': isEditShown, 'hide': !isEditShown, 'form-error': isSubmitted && form.controls.email.errors}"
+				type="text"
+				formControlName="email"
+				placeholder="{{contact.email}}">
+			<button *ngIf="isEditShown" class="btn btn-secondary d-flex justify-content between flex-wrap px-2 me-2" (click)="toggleEdit()">
+				<i class="bi bi-arrow-clockwise"></i>
+			</button>
+		</div>
 	</div>
 	<div class="col-1 text-wrap text-start">
-		<button class="btn btn-warning d-flex justify-content-between flex-wrap px-2 w-75">
+		<button *ngIf="!isEditShown" class="btn btn-warning d-flex justify-content-between flex-wrap px-2 w-75" (click)="toggleEdit()">
 			<i class="bi bi-pencil"></i>
 			<span>Edit</span>
+		</button>
+		<button *ngIf="isEditShown" class="btn btn-primary d-flex justify-content-between flex-wrap px-2 w-75" (click)="updateContact()">
+			Submit
 		</button>
 	</div>
 	<div class="col-1 text-wrap text-start">
@@ -23,4 +49,4 @@
 			<span>Delete</span>
 		</button>
 	</div>
-</div>
+</form>
