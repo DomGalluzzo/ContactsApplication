@@ -56,6 +56,6 @@
 		</div>
 	</div>
 	<ng-container *ngFor="let contact of contacts">
-		<app-contact [contact]="contact"></app-contact>
+		<app-contact [contact]="contact" (deleted)="removeContact($event)"></app-contact>
 	</ng-container>
 </div>
