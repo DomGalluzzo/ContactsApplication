@@ -1,0 +1,34 @@
+.notification {
+	box-shadow: rgba(0,0,0,0.5) 1px 1px 5px;
+	border-radius: 5px;
+	color: white;
+	position: fixed;
+	right: 1rem;
+	top: 1rem;
+	width: 20rem;
+	z-index: 1;
+}
+
+.notification__message {
+	width: 95%;
+}
+
+.notification__title {
+	width: 95%;
+}
+
+.notification--error {
+	background-color: lightcoral;
+}
+
+.notification--success {
+	background-color: cornflowerblue;
+}
+
+.notification__container {
+	margin: 6px 10px 10px 10px;
+}
+
+.notification__close-button i {
+	cursor: pointer;
+}
