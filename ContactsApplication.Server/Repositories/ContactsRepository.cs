@@ -54,6 +54,20 @@ namespace ContactsApplication.Server.Repositories
             }
         }
 
+        public async Task<Contact> UpdateAsync(int contactId,
+            IEnumerable<Contact> existingContacts, Contact contactRequest, string filePath)
+        {
+            try
+            {
+                return await TryUpdateAsync(contactId, existingContacts, contactRequest, filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
         private async Task<IEnumerable<Contact>> TryGetAllAsync(string filePath)
         {
             var jsonContent = await File.ReadAllTextAsync(filePath);
@@ -87,6 +101,23 @@ namespace ContactsApplication.Server.Repositories
             await File.WriteAllTextAsync(filePath, JsonConvert.SerializeObject(existingList));
 
             return contactToDelete.Id;
+        }
+
+        private async Task<Contact> TryUpdateAsync(int contactId,
+            IEnumerable<Contact> existingContacts, Contact contactRequest, string filePath)
+        {
+            var existingList = existingContacts.ToList();
+            var contactToUpdateIndex = existingList.FindIndex(c => c.Id == contactId);
+
+            if (contactToUpdateIndex == -1)
+                throw new Exception();
+
+            existingList[contactToUpdateIndex] = contactRequest;
+            contactRequest.Id = contactId;
+
+            await File.WriteAllTextAsync(filePath, JsonConvert.SerializeObject(existingList));
+
+            return contactRequest;
         }
     }
 }

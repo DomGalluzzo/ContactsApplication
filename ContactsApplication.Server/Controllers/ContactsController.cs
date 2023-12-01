@@ -68,5 +68,22 @@ namespace ContactsApplication.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+        [HttpPut("{contactId}")]
+        public async Task<IActionResult> UpdateContactAsync(int contactId, [FromBody] Contact contactRequest)
+        {
+            try
+            {
+                var updatedContact = await _contactsService.UpdateContactAsync(contactId, contactRequest);
+
+                return Ok(updatedContact);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
