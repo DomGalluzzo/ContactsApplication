@@ -21,4 +21,8 @@ export class ContactsService {
 	deleteContact(contactId: number): Observable<number> {
 		return this.http.delete<number>([this.baseUrl, contactId].join('/'));
 	}
+
+	updateContact(contactId: number, contactRequest: Contact): Observable<Contact> {
+		return this.http.put<Contact>([this.baseUrl, contactId].join('/'), contactRequest);
+	}
 }

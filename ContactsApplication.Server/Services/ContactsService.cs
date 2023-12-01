@@ -63,6 +63,21 @@ namespace ContactsApplication.Server.Services
             }
         }
 
+        public async Task<Contact> UpdateContactAsync(int contactId, Contact contactRequest)
+        {
+            try
+            {
+                var existingContacts = await GetContactsAsync();
+
+                return await TryUpdateContactAsync(contactId, existingContacts, contactRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
         private async Task<IEnumerable<Contact>> TryGetContactsAsync()
         {
             return await _contactsRepository.GetAllAsync(_contactsOption.FilePath);
@@ -80,6 +95,13 @@ namespace ContactsApplication.Server.Services
         {
             return await _contactsRepository.DeleteAsync(contactId,
                 existingContacts, _contactsOption.FilePath);
+        }
+
+        private async Task<Contact> TryUpdateContactAsync(int contactId,
+            IEnumerable<Contact> existingContacts, Contact contactRequest)
+        {
+            return await _contactsRepository.UpdateAsync(contactId,
+                existingContacts, contactRequest, _contactsOption.FilePath);
         }
     }
 }

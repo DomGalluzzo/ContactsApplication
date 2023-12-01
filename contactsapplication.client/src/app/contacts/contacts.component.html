@@ -5,26 +5,46 @@
 				<i class="bi bi-plus"></i>
 				<span>New Contact</span>
 			</button>
-			<form [formGroup]="form">
+			<form [formGroup]="newContactForm">
 				<div id="newContact" class="accordion-collapse collapse border rounded mt-2 align-items-center">
 					<div class="accordion-body d-flex flex-row">
 						<div class="col-3 mb-3">
 							<div class="text-start">
 								<label for="newContactFirstName" class="form-label">First Name</label>
 							</div>
-							<input formControlName="firstName" type="text" class="form-control" id="newContactFirstName" placeholder="John" required>
+							<input
+								formControlName="firstName"
+								type="text"
+								class="form-control"
+								id="newContactFirstName"
+								[ngClass]="isSubmitted && formControls.firstName.errors ? 'form-error' : ''"
+								placeholder="John" required>
+							<label *ngIf="isSubmitted && formControls.firstName.errors" class="text-danger">Required</label>
 						</div>
 						<div class="col-3 mb-3 mx-3">
 							<div class="text-start">
 								<label for="newContactLastName" class="form-label">Last Name</label>
 							</div>
-							<input formControlName="lastName" type="text" class="form-control" id="newContactLastName" placeholder="Doe" required>
+							<input
+								formControlName="lastName"
+								type="text"
+								class="form-control"
+								id="newContactLastName"
+								[ngClass]="isSubmitted && formControls.firstName.errors ? 'form-error' : ''"
+								placeholder="Doe" required>
+							<label *ngIf="isSubmitted && formControls.lastName.errors" class="text-danger">Required</label>
 						</div>
 						<div class="col-3 mb-3">
 							<div class="text-start">
 								<label for="newContactEmail" class="form-label">Email</label>
 							</div>
-							<input formControlName="email" type="email" class="form-control" id="newContactEmail" placeholder="JohnDoe@gmail.com" required>
+							<input
+								formControlName="email"
+								type="email"
+								class="form-control"
+								id="newContactEmail"
+								[ngClass]="isSubmitted && formControls.firstName.errors ? 'form-error' : ''"
+								placeholder="JohnDoe@gmail.com" required>
 							<label *ngIf="isSubmitted && formControls.email.errors" class="text-danger">Must be in valid email address format</label>
 						</div>
 						<div class="col-2 mb-3 ms-5" id="contacts-submit__button">
@@ -55,7 +75,7 @@
 			<h4>Delete</h4>
 		</div>
 	</div>
-	<ng-container *ngFor="let contact of contacts">
-		<app-contact [contact]="contact" (deleted)="removeContact($event)"></app-contact>
+	<ng-container *ngFor="let contact of contacts; let i = index">
+		<app-contact [contact]="contact" [form]="newContactForm" (deleted)="removeContact($event)" (updated)="updateContact()"></app-contact>
 	</ng-container>
 </div>
