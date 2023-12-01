@@ -24,6 +24,10 @@ export class ContactsComponent implements OnInit {
     this.getContacts();
   }
 
+  toggleModal(): void {
+    
+  }
+
   private getContacts(): void {
     this.contactsService.getContacts().pipe(catchError((errorResponse: HttpErrorResponse) => {
       const error = errorResponse.error as BaseError;
