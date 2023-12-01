@@ -62,6 +62,7 @@ export class ContactsComponent implements OnInit {
 
   updateContact(): void {
     this.getContacts();
+    this.notificationService.createSuccess('Contact updated', 'Success!');
   }
 
   private getContacts(): void {
