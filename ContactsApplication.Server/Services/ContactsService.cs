@@ -48,6 +48,21 @@ namespace ContactsApplication.Server.Services
             }
         }
 
+        public async Task<int> DeleteContactAsync(int contactId)
+        {
+            try
+            {
+                var existingContacts = await GetContactsAsync();
+
+                return await TryDeleteContactAsync(contactId, existingContacts);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
         private async Task<IEnumerable<Contact>> TryGetContactsAsync()
         {
             return await _contactsRepository.GetAllAsync(_contactsOption.FilePath);
@@ -57,8 +72,14 @@ namespace ContactsApplication.Server.Services
             IEnumerable<Contact> existingContacts)
         {
             return await _contactsRepository.CreateAsync(contactRequest,
-                existingContacts,
-                _contactsOption.FilePath);
+                existingContacts, _contactsOption.FilePath);
+        }
+        
+        private async Task<int> TryDeleteContactAsync(int contactId,
+            IEnumerable<Contact> existingContacts)
+        {
+            return await _contactsRepository.DeleteAsync(contactId,
+                existingContacts, _contactsOption.FilePath);
         }
     }
 }
