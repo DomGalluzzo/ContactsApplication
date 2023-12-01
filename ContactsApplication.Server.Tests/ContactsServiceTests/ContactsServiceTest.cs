@@ -34,6 +34,9 @@ namespace ContactsApplication.Server.Tests.ContactsServiceTests
             var mockRepo = new Mock<IContactsRepository>();
             mockRepo.Setup(r => r.GetAllAsync(It.IsAny<string>()))
                 .ReturnsAsync(new List<Contact>());
+            mockRepo.Setup(r => r.CreateAsync(It.IsAny<Contact>(),
+                It.IsAny<IEnumerable<Contact>>(), It.IsAny<string>()))
+                .ReturnsAsync(new Contact());
 
             return mockRepo;
         }

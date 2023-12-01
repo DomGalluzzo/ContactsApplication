@@ -26,11 +26,37 @@ namespace ContactsApplication.Server.Repositories
             }
         }
 
+        public async Task<Contact> CreateAsync(Contact contactRequest,
+            IEnumerable<Contact> existingContacts, string filePath)
+        {
+            try
+            {
+                return await TryCreateAsync(contactRequest, existingContacts, filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
         private async Task<IEnumerable<Contact>> TryGetAllAsync(string filePath)
         {
             var jsonContent = await File.ReadAllTextAsync(filePath);
 
             return JsonConvert.DeserializeObject<IEnumerable<Contact>>(jsonContent);
+        }
+
+        private async Task<Contact> TryCreateAsync(Contact contactRequest,
+            IEnumerable<Contact> existingContacts, string filePath)
+        {
+            var maxId = existingContacts.Any() ? existingContacts.Max(c => c.Id) : 0;
+            contactRequest.Id = maxId + 1;
+            existingContacts = existingContacts.Append(contactRequest);
+
+            await File.WriteAllTextAsync(filePath, JsonConvert.SerializeObject(existingContacts));
+
+            return contactRequest;
         }
     }
 }

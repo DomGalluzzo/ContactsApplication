@@ -33,9 +33,32 @@ namespace ContactsApplication.Server.Services
             }
         }
 
+        public async Task<Contact> CreateContactAsync(Contact contactRequest)
+        {
+            try
+            {
+                var existingContacts = await GetContactsAsync();
+
+                return await TryCreateContactAsync(contactRequest, existingContacts);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+        }
+
         private async Task<IEnumerable<Contact>> TryGetContactsAsync()
         {
             return await _contactsRepository.GetAllAsync(_contactsOption.FilePath);
+        }
+
+        private async Task<Contact> TryCreateContactAsync(Contact contactRequest,
+            IEnumerable<Contact> existingContacts)
+        {
+            return await _contactsRepository.CreateAsync(contactRequest,
+                existingContacts,
+                _contactsOption.FilePath);
         }
     }
 }
